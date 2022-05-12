@@ -7,8 +7,10 @@ import {
   Patch,
   Post,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 import { CategoryService } from './category.service';
 import { Category } from './entities/category.entity';
 
@@ -24,8 +26,8 @@ export class CategoryController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Body() category: Category) {
-    return this.categoryService.create(category);
+  create(@Body() category: Category, @Req() req: Request) {
+    return this.categoryService.create(category, req.headers.authorization);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -39,13 +41,18 @@ export class CategoryController {
   update(
     @Param('category_id') category_id: String,
     @Body() category: Category,
+    @Req() req: Request,
   ) {
-    return this.categoryService.update(category_id, category);
+    return this.categoryService.update(
+      category_id,
+      category,
+      req.headers.authorization,
+    );
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  delete(@Param('id') category_id: String) {
-    return this.categoryService.delete(category_id);
+  delete(@Param('id') category_id: String, @Req() req: Request) {
+    return this.categoryService.delete(category_id, req.headers.authorization);
   }
 }
