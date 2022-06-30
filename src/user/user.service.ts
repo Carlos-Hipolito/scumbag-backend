@@ -52,4 +52,18 @@ export class UserService {
     await this.userModel.findByIdAndDelete(userid.sub);
     return { message: `User ${userid.sub} deleted.` };
   }
+
+  async givePoint(user_id, token: string) {
+    const [, jwt] = token.split(' ');
+    const userid = verify(jwt, process.env.secretkey);
+    if (userid.sub == process.env.masteraccount) {
+      var UserPoints = (await this.userModel.findById(user_id.id)).points;
+      const newPoint = UserPoints + 1;
+      const updateduser = await this.userModel.findByIdAndUpdate(user_id.id, {
+        points: newPoint,
+      });
+      return { message: `1 point added to ${updateduser.firstname}` };
+    }
+    throw new HttpException('NOT_AUTORIZED', HttpStatus.FORBIDDEN);
+  }
 }

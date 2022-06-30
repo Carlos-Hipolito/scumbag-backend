@@ -65,4 +65,18 @@ export class TaskService {
     }
     throw new HttpException('NOT AUTORIZED', HttpStatus.FORBIDDEN);
   }
+
+  async update(token: string, task_id: string, task: Task) {
+    const [, jwt] = token.split(' ');
+    const userid = verify(jwt, process.env.secretkey);
+    const thisTask = await this.taskModel.findById(task_id);
+    if (
+      thisTask.user_id == userid.sub ||
+      userid.sub == process.env.masteraccount
+    ) {
+      await this.taskModel.findByIdAndUpdate(task_id, task);
+      return task;
+    }
+    throw new HttpException('NOT AUTORIZED', HttpStatus.FORBIDDEN);
+  }
 }
