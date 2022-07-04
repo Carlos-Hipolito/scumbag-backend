@@ -14,7 +14,7 @@ import { Request } from 'express';
 import { CategoryService } from './category.service';
 import { Category } from './entities/category.entity';
 
-@Controller('category')
+@Controller('api/category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 

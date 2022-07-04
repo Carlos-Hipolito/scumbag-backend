@@ -14,7 +14,7 @@ import { Request } from 'express';
 import { Task } from './entities/task.entity';
 import { User } from 'src/user/entities/user.entity';
 
-@Controller('task')
+@Controller('api/task')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 

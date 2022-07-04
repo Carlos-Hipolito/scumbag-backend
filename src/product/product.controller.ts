@@ -13,7 +13,7 @@ import { Request } from 'express';
 import { Product } from './entities/product.entity';
 import { ProductService } from './product.service';
 
-@Controller('product')
+@Controller('api/product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
